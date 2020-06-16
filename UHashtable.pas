@@ -151,8 +151,8 @@ end;
 
 function THashTable.HashF(key: TKey): TIndex;
 begin
-  //Result:= TInfo.Good_HF(key) mod N;
-  Result:= TInfo.Bad_HF(key) mod N;
+  Result:= TInfo.Good_HF(key) mod N;
+  //Result:= TInfo.Bad_HF(key) mod N;
 end;
 
 function THashTable.IndexOf(key: TKey; var a:TIndex): boolean;

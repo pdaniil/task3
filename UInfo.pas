@@ -7,11 +7,11 @@ interface
 uses
   SysUtils, Classes, ComCtrls, StdCtrls, Grids;
 type
-  TKey = integer;
+  TKey = string;
 
   TInfo = class
   private
-    FNumber: TKey;
+    FNumber: integer;
     FFIO: string;
     FZachets: integer;
     FExams: integer;
@@ -27,13 +27,27 @@ type
     class procedure ShowTitle(SG:TStringGrid);
     procedure ShowInfo(SL:TStrings);
 
-    property key:TKey read FNumber write FNumber;
+    procedure NumberToString(str: TKey);
+    function StringToNumber:TKey;
+
+    property key: TKey read StringToNumber write NumberToString;
+    property number:integer read FNumber write FNumber;
     property FIO:string read FFIO write FFIO;
     property zachets:integer read FZachets write FZachets;
     property exams:integer read FExams write FExams;
   end;
 
 implementation
+
+procedure TInfo.NumberToString(str: TKey);
+begin
+  FNumber:= StrToInt(str);
+end;
+
+function TInfo.StringToNumber:TKey;
+begin
+  Result:= IntToStr(FNumber);
+end;
 
 function GetValueFromFile(var f:TextFile; var value:string):boolean;
 var
@@ -73,15 +87,19 @@ begin
 end;
 
 class function TInfo.Good_HF(key:Tkey):integer;
+const
+  ord_0 = ord('0');
+var
+  i:integer;
 begin
-  Result:= key;
+  Result:= 0;
+  for i:= 1 to length(key) do
+    Result:= Result + (ord(key[i]) - ord_0) * i;
 end;
 
 class function TInfo.Bad_HF(key:TKey):integer;
-const
-  ord_0 = ord('0');
 begin
-  Result:= key mod 10;
+  Result:= 100;
 end;
 
 class procedure TInfo.ShowTitle(SG:TStringGrid);

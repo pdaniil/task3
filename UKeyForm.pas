@@ -53,7 +53,7 @@ begin
   edExams.ReadOnly:=(AInfo <> nil);
   if Info <> nil then
     begin
-      edNumber.Text:=IntToStr(info.key);
+      edNumber.Text:=info.key;
       edFIO.Text:=info.FIO;
       edZachets.Text:= IntToStr(info.zachets);
       edExams.Text:= IntToStr(info.exams);
@@ -64,20 +64,23 @@ procedure TKeyForm.bOkClick(Sender: TObject);
 var
   key: TKey;
   num: integer;
+  stdNumber: integer;
+  zachNumber: integer;
+  examNumber: integer;
 begin
-   if not TryStrToInt(Trim(edNumber.Text), num) and (num <= 0) then
+   if not TryStrToInt(Trim(edNumber.Text), stdNumber) and (stdNumber <= 0) then
       begin
         ShowMessage('Номер студ. билета имеет неверный формат!');
         edNumber.SetFocus();
         exit;
       end;
-    if not TryStrToInt(Trim(edZachets.Text), num) and (num <= 0) then
+    if not TryStrToInt(Trim(edZachets.Text), zachNumber) and (zachNumber <= 0) then
       begin
         ShowMessage('Кол-во несданных зачетов имеет неверный формат!');
         edZachets.SetFocus();
         exit;
       end;
-    if not TryStrToInt(Trim(edExams.Text), num) and (num <= 0) then
+    if not TryStrToInt(Trim(edExams.Text), examNumber) and (examNumber <= 0) then
       begin
         ShowMessage('Кол-во несданных экзаменов имеет неверный формат!');
         edExams.SetFocus();
@@ -89,7 +92,7 @@ begin
         edFIO.SetFocus();
         exit;
       end;
-    info:=TInfo.Create(StrToInt(edNumber.Text), Trim(edFIO.Text), StrToInt(edZachets.Text), StrToInt(edExams.Text));
+    info:=TInfo.Create(stdNumber, Trim(edFIO.Text), zachNumber, examNumber);
     ModalResult:=mrOk;
 end;
 

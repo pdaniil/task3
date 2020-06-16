@@ -65,7 +65,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 
-    function InputKey (ACaption: string; var AKey: TKey): boolean;
+    function InputKey (ACaption: string; var AKey: integer): boolean;
 
   private
     { Private declarations }
@@ -81,7 +81,7 @@ implementation
 
 {$R *.dfm}
 
-function TMainForm.InputKey(ACaption:string; var Akey:TKey):boolean;
+function TMainForm.InputKey(ACaption:string; var Akey:integer):boolean;
 var
   s:string;
   num:integer;
@@ -156,10 +156,10 @@ end;
 procedure TMainForm.actFindExecute(Sender: TObject);
 var
   info:TInfo;
-  key:TKey;
+  num:integer;
 begin
-  if InputKey('Найти',key) then
-    if hash.Find(key,info) then
+  if InputKey('Найти', num) then
+    if hash.Find(IntToStr(num), info) then
       with TKeyForm.Create('Информация об студенте', info) do
         try
           ShowModal;
@@ -192,10 +192,10 @@ end;
 
 procedure TMainForm.actDeleteExecute(Sender: TObject);
 var
-  key:TKey;
+  num:integer;
 begin
-  if InputKey('Удалить ',key) then
-    if hash.Delete(key) then
+  if InputKey('Удалить ', num) then
+    if hash.Delete(IntToStr(num)) then
       ShowMessage('Студент удален')
     else
       ShowMessage('Студент не найден');
